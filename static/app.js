@@ -134,6 +134,7 @@ async function runAnalysis(endpoint, payload, btnId) {
     btn.innerHTML = `<span class="btn-text">Scanning...</span>`;
     btn.disabled = true;
 
+    let data = null;
     try {
         const res = await fetch(endpoint, {
             method: "POST",
@@ -147,13 +148,21 @@ async function runAnalysis(endpoint, payload, btnId) {
             return;
         }
 
-        const data = await res.json();
-        renderResult(data);
+        data = await res.json();
     } catch (err) {
         alert(`Network Error: ${err.message}`);
+        return;
     } finally {
         btn.innerHTML = originalText;
         btn.disabled = false;
+    }
+
+    if (data) {
+        try {
+            renderResult(data);
+        } catch (rErr) {
+            console.error("Render error:", rErr);
+        }
     }
 }
 
@@ -211,7 +220,10 @@ function renderResult(data) {
 
     const concernedUl = document.getElementById("res-adv-concerned");
     concernedUl.innerHTML = "";
-    (adv.why_concerned || []).forEach(reason => {
+    const whyList = Array.isArray(adv.why_concerned)
+        ? adv.why_concerned
+        : (adv.why_concerned ? [adv.why_concerned] : []);
+    whyList.forEach(reason => {
         const li = document.createElement("li");
         li.innerText = reason;
         concernedUl.appendChild(li);
@@ -219,13 +231,16 @@ function renderResult(data) {
 
     const actionsUl = document.getElementById("res-adv-actions");
     actionsUl.innerHTML = "";
-    (adv.immediate_actions || []).forEach(act => {
+    const actList = Array.isArray(adv.immediate_actions)
+        ? adv.immediate_actions
+        : (adv.immediate_actions ? [adv.immediate_actions] : []);
+    actList.forEach(act => {
         const li = document.createElement("li");
         li.innerText = act;
         actionsUl.appendChild(li);
     });
 
-    document.getElementById("res-adv-uncertainty").innerText = adv.uncertainty_statement || "";
+    document.getElementById("res-adv-uncertainty").innerText = adv.uncertainty || adv.uncertainty_statement || "";
     document.getElementById("res-adv-disclaimer").innerText = adv.disclaimer || "Advisory output only.";
 }
 
