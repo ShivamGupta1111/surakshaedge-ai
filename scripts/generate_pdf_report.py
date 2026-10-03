@@ -53,7 +53,7 @@ def build_pdf() -> None:
     story.append(Paragraph("SurakshaEdge AI — Threat Detection System", styles["CoverTitle"]))
     story.append(Paragraph("Comprehensive Test Cases & Real-World Cyber Threat Outcomes Compilation", styles["CoverSubtitle"]))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("<b>Author:</b> ShivamGupta1111 &nbsp;|&nbsp; <b>GitHub:</b> https://github.com/ShivamGupta1111/surakshaedge-ai &nbsp;|&nbsp; <b>Version:</b> 1.0", styles["BodyTextCustom"]))
+    story.append(Paragraph("<b>Author:</b> Shivam Gupta &nbsp;|&nbsp; <b>Version:</b> 1.0 &nbsp;|&nbsp; <b>Scope:</b> Local Edge Threat Analysis", styles["BodyTextCustom"]))
     story.append(Spacer(1, 8))
     story.append(HRFlowable(width="100%", thickness=1.5, color=accent_blue, spaceAfter=12))
 
