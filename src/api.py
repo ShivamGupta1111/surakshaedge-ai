@@ -128,13 +128,19 @@ def create_app() -> FastAPI:
         response.headers["X-Request-ID"] = request_id
         return response
 
+    frontend_dir = PROJECT_ROOT / "frontend"
     static_dir = PROJECT_ROOT / "static"
+    active_ui_dir = frontend_dir if (frontend_dir / "index.html").is_file() else static_dir
+
     if static_dir.is_dir():
         application.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    if frontend_dir.is_dir():
+        application.mount("/frontend", StaticFiles(directory=str(frontend_dir)), name="frontend")
 
+    if active_ui_dir.is_dir():
         @application.get("/", include_in_schema=False)
         def index() -> Any:
-            return FileResponse(static_dir / "index.html")
+            return FileResponse(active_ui_dir / "index.html")
 
     @application.get("/health")
     def health_endpoint() -> Any:

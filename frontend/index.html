@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurakshaEdge AI — Threat Detection System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dark-theme">
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 0L0 5V13C0 20.5 5.1 27.2 12 28C18.9 27.2 24 20.5 24 13V5L12 0Z" fill="url(#shield_grad)"/>
+                        <path d="M12 6L18 9V14C18 18.5 15.4 22.5 12 23.5C8.6 22.5 6 18.5 6 14V9L12 6Z" fill="#0B0F19"/>
+                        <path d="M11 10H13V15H11V10ZM11 17H13V19H11V17Z" fill="#00F2FE"/>
+                        <defs>
+                            <linearGradient id="shield_grad" x1="0" y1="0" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#00F2FE"/>
+                                <stop offset="1" stop-color="#4FACFE"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>SurakshaEdge AI</h1>
+                    <span class="subtitle">AI-Powered Safety & Threat Detection System</span>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <div class="status-pill" id="status-offline">
+                    <span class="dot green"></span>
+                    <span>100% Local / Offline</span>
+                </div>
+                <div class="status-pill" id="status-advisor">
+                    <span class="dot blue"></span>
+                    <span id="advisor-backend-label">Advisor: Local Template</span>
+                </div>
+                <div class="status-pill" id="status-health">
+                    <span class="dot green"></span>
+                    <span>System Active</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="app-nav">
+            <button class="nav-tab active" data-tab="analyzer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Threat Analyzer
+            </button>
+            <button class="nav-tab" data-tab="alerts">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Alert History & Logs
+            </button>
+            <button class="nav-tab" data-tab="metrics">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Models & Metrics
+            </button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- TAB 1: THREAT ANALYZER -->
+        <section id="tab-analyzer" class="tab-pane active">
+            <div class="grid-2col">
+                <!-- Left Column: Detector Selection & Inputs -->
+                <div class="card analyzer-card">
+                    <div class="card-header">
+                        <h2>Multi-Vector Threat Inspection</h2>
+                        <p>Select a threat vector to evaluate with local scikit-learn models & rules.</p>
+                    </div>
+
+                    <div class="vector-selector">
+                        <button class="vector-btn active" data-vector="sms">
+                            <span class="icon">💬</span>
+                            <span>SMS / Message</span>
+                        </button>
+                        <button class="vector-btn" data-vector="url">
+                            <span class="icon">🔗</span>
+                            <span>URL / Phishing</span>
+                        </button>
+                        <button class="vector-btn" data-vector="network">
+                            <span class="icon">⚡</span>
+                            <span>Network Flow</span>
+                        </button>
+                        <button class="vector-btn" data-vector="telemetry">
+                            <span class="icon">🛡️</span>
+                            <span>Telemetry</span>
+                        </button>
+                    </div>
+
+                    <!-- SMS Form -->
+                    <form id="form-sms" class="vector-form active">
+                        <div class="form-group">
+                            <label for="sms-text">SMS / Message Content</label>
+                            <textarea id="sms-text" rows="4" placeholder="Enter suspicious message text..." required></textarea>
+                        </div>
+                        <div class="presets-row">
+                            <span class="preset-title">Demo Presets:</span>
+                            <button type="button" class="preset-chip" onclick="setSmsPreset('phishing')">Phishing OTP</button>
+                            <button type="button" class="preset-chip" onclick="setSmsPreset('scam')">Lottery Scam</button>
+                            <button type="button" class="preset-chip" onclick="setSmsPreset('legit')">Legitimate Meeting</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-scan-sms">
+                            <span class="btn-text">Analyze Message</span>
+                        </button>
+                    </form>
+
+                    <!-- URL Form -->
+                    <form id="form-url" class="vector-form">
+                        <div class="form-group">
+                            <label for="url-text">Target URL</label>
+                            <input type="url" id="url-text" placeholder="https://example.com/login" required />
+                        </div>
+                        <div class="presets-row">
+                            <span class="preset-title">Demo Presets:</span>
+                            <button type="button" class="preset-chip" onclick="setUrlPreset('benign')">Benign URL</button>
+                            <button type="button" class="preset-chip" onclick="setUrlPreset('phishing')">Phishing IP</button>
+                            <button type="button" class="preset-chip" onclick="setUrlPreset('suspicious')">Shortened Link</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-scan-url">
+                            <span class="btn-text">Analyze URL</span>
+                        </button>
+                    </form>
+
+                    <!-- Network Flow Form -->
+                    <form id="form-network" class="vector-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="net-duration">Duration (s)</label>
+                                <input type="number" id="net-duration" step="0.1" value="0.1" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-protocol">Protocol</label>
+                                <select id="net-protocol">
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                    <option value="icmp">ICMP</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="net-src-port">Src Port</label>
+                                <input type="number" id="net-src-port" value="1234" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-dst-port">Dst Port</label>
+                                <input type="number" id="net-dst-port" value="4444" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-fwd-packets">Fwd Packets</label>
+                                <input type="number" id="net-fwd-packets" value="40" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-bwd-packets">Bwd Packets</label>
+                                <input type="number" id="net-bwd-packets" value="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-packet-rate">Packet Rate (/s)</label>
+                                <input type="number" id="net-packet-rate" value="2500" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-failed-count">Failed Conns</label>
+                                <input type="number" id="net-failed-count" value="12" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="net-syn-count">SYN Count</label>
+                                <input type="number" id="net-syn-count" value="40" required />
+                            </div>
+                        </div>
+                        <div class="presets-row">
+                            <span class="preset-title">Demo Presets:</span>
+                            <button type="button" class="preset-chip" onclick="setNetPreset('normal')">Normal Traffic</button>
+                            <button type="button" class="preset-chip" onclick="setNetPreset('intrusion')">Port Scan / Flood</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-scan-net">
+                            <span class="btn-text">Analyze Network Flow</span>
+                        </button>
+                    </form>
+
+                    <!-- Telemetry Form -->
+                    <form id="form-telemetry" class="vector-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="tel-proc">Unexpected Spawn Count</label>
+                                <input type="number" id="tel-proc" value="3" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="tel-persist">Persistence Attempts</label>
+                                <input type="number" id="tel-persist" value="1" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="tel-failed-auth">Failed Auth Count</label>
+                                <input type="number" id="tel-failed-auth" value="10" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="tel-suspicious-path">Suspicious Path Exec</label>
+                                <select id="tel-suspicious-path">
+                                    <option value="true">Yes (True)</option>
+                                    <option value="false">No (False)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-scan-tel">
+                            <span class="btn-text">Analyze Telemetry</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Column: Results Dashboard -->
+                <div class="card result-card" id="result-container">
+                    <div class="empty-state" id="result-empty">
+                        <div class="empty-icon">🔍</div>
+                        <h3>No Assessment Conducted Yet</h3>
+                        <p>Submit a message, URL, network flow, or telemetry on the left to run local threat analysis.</p>
+                    </div>
+
+                    <div class="result-body hidden" id="result-content">
+                        <div class="result-header">
+                            <div>
+                                <span class="badge" id="res-risk-level">LOW</span>
+                                <h3 class="threat-title" id="res-primary-threat">SMS Threat</h3>
+                            </div>
+                            <div class="score-display">
+                                <div class="score-val" id="res-score-num">0.00</div>
+                                <div class="score-lbl">Risk Score</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar Gauge -->
+                        <div class="gauge-bar-container">
+                            <div class="gauge-bar" id="res-gauge-bar" style="width: 10%;"></div>
+                        </div>
+
+                        <div class="stats-mini-grid">
+                            <div class="stat-mini">
+                                <span class="label">Confidence</span>
+                                <span class="val" id="res-confidence">95%</span>
+                            </div>
+                            <div class="stat-mini">
+                                <span class="label">Detector</span>
+                                <span class="val" id="res-detector-name">sms</span>
+                            </div>
+                            <div class="stat-mini">
+                                <span class="label">Model Version</span>
+                                <span class="val" id="res-model-version">sms-demo-1.0</span>
+                            </div>
+                            <div class="stat-mini">
+                                <span class="label">Advisor</span>
+                                <span class="val" id="res-advisor-backend">local_template</span>
+                            </div>
+                        </div>
+
+                        <!-- Evidence Tags -->
+                        <div class="section-block">
+                            <h4>Extracted Evidence Tags</h4>
+                            <div class="tag-cloud" id="res-evidence-tags"></div>
+                        </div>
+
+                        <!-- Recommended Action -->
+                        <div class="action-box" id="res-action-box">
+                            <div class="action-title">Recommended Action</div>
+                            <div class="action-desc" id="res-action-text">No action required.</div>
+                        </div>
+
+                        <!-- Llama Advisor Section -->
+                        <div class="advisor-box">
+                            <div class="advisor-header">
+                                <span class="advisor-icon">🤖</span>
+                                <div>
+                                    <h4 id="res-adv-title">Advisor Guidance</h4>
+                                    <span class="advisor-subtitle">Privacy-Preserving Plain Language Explanation</span>
+                                </div>
+                            </div>
+                            <p class="advisor-explanation" id="res-adv-explanation"></p>
+                            
+                            <div class="advisor-lists">
+                                <div class="adv-col">
+                                    <h5 class="text-danger">⚠️ Why System Is Concerned</h5>
+                                    <ul id="res-adv-concerned"></ul>
+                                </div>
+                                <div class="adv-col">
+                                    <h5 class="text-success">✅ Immediate Actions</h5>
+                                    <ul id="res-adv-actions"></ul>
+                                </div>
+                            </div>
+
+                            <div class="advisor-disclaimer">
+                                <span id="res-adv-uncertainty"></span>
+                                <br/>
+                                <small id="res-adv-disclaimer"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ALERT HISTORY & LOGS -->
+        <section id="tab-alerts" class="tab-pane">
+            <div class="card">
+                <div class="card-header flex-between">
+                    <div>
+                        <h2>Local Alert History</h2>
+                        <p>Persisted SQLite log records with one-way SHA-256 content hashes & redacted evidence.</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadAlerts()">Refresh Alerts</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Alert ID</th>
+                                <th>Timestamp</th>
+                                <th>Detector</th>
+                                <th>Risk Level</th>
+                                <th>Score</th>
+                                <th>Evidence</th>
+                                <th>Advisor</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts-table-body">
+                            <tr>
+                                <td colspan="8" class="text-center py-4">Loading stored alert records...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: METRICS & MODELS -->
+        <section id="tab-metrics" class="tab-pane">
+            <div class="grid-2col">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Loaded Scikit-Learn Models</h2>
+                        <p>Status of trusted model artifacts loaded from <code>models/</code>.</p>
+                    </div>
+                    <div id="models-status-list" class="models-list"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>System Metrics & Counters</h2>
+                        <p>In-process API request performance counters.</p>
+                    </div>
+                    <div class="metrics-grid" id="metrics-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
