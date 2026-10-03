@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      SURAKSHAEDGE_HOST: 0.0.0.0
+      SURAKSHAEDGE_OFFLINE_MODE: "true"
+      SURAKSHAEDGE_AUTH_ENABLED: "true"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    restart: unless-stopped

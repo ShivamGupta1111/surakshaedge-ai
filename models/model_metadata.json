@@ -1,0 +1,83 @@
+{
+  "generated_at": "2026-10-03T11:02:31.799842+00:00",
+  "sklearn_version": "1.6.1",
+  "joblib_version": "1.4.2",
+  "random_seed": 42,
+  "note": "If trained on generate_sample_data.py output, artifacts are DEMO models only.",
+  "sms": {
+    "f1_macro": 0.5555555555555555,
+    "labels": [
+      "legitimate",
+      "phishing",
+      "scam",
+      "spam"
+    ],
+    "feature_schema": [
+      "text"
+    ],
+    "status": "trained",
+    "demo": true,
+    "model_version": "sms-demo-1.0",
+    "dataset_name": "sms_spam.csv",
+    "sha256": "83197ad5599eef843f12f7f51b65bfb076e84011fbd9ba424c57d8d7da99f4af"
+  },
+  "url": {
+    "f1_macro": 0.7142857142857143,
+    "labels": [
+      "benign",
+      "malicious",
+      "phishing_suspected",
+      "suspicious"
+    ],
+    "feature_schema": [
+      "url_length",
+      "host_length",
+      "subdomain_count",
+      "is_ip",
+      "at_symbol",
+      "hyphen_count",
+      "punycode",
+      "non_ascii",
+      "encoded_chars",
+      "redirects",
+      "suspicious_terms",
+      "shortener",
+      "unusual_tld",
+      "query_keys",
+      "has_userinfo"
+    ],
+    "status": "trained",
+    "demo": true,
+    "model_version": "url-demo-1.0",
+    "dataset_name": "url_dataset.csv",
+    "sha256": "de1d77738acc49da8b4a1bfca129e3367508c0d26c3e2224778726bf082487d3"
+  },
+  "network": {
+    "f1_macro": 1.0,
+    "labels": [
+      "likely_intrusion",
+      "normal",
+      "suspicious"
+    ],
+    "feature_schema": [
+      "duration",
+      "protocol",
+      "src_port",
+      "dst_port",
+      "fwd_packets",
+      "bwd_packets",
+      "bytes_transferred",
+      "packet_rate",
+      "failed_count",
+      "repeated_dst",
+      "conn_freq",
+      "syn_count",
+      "rst_count"
+    ],
+    "status": "trained",
+    "demo": true,
+    "model_version": "network-demo-1.0",
+    "dataset_name": "network_flows.csv",
+    "sha256": "d4a4da8752e49ba1f4e790b3cf4be44ba8fb8af1d0abd8d5113f13c3856f470e"
+  }
+}
